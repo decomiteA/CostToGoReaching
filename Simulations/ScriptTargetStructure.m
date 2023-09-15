@@ -1,6 +1,3 @@
-% The aim of this script is to investigate the impact of target structure
-% on goal-directed behavior in human reaching movements.
-
 clc; close all; clear all; format long;
 tau = 0.06; m = 1; G = 0.1; dt = 0.01; nsteps = 55;
 
@@ -76,15 +73,7 @@ FigureMeanTargetStructure;
 FigureTestC2G;
 
 
-%%
-% In this section we implement on one side a switch between different
-% control policies and a continuous adaptation of target size (MPC
-% applied to optimal feedback control).
-% TODO
-% Change the state dimension and the dimensions of the subsequent matrices
-% to handle change in target structure
 clc;
-% Let's start by comparing the mpc vs the classical implementation
 Q_MPC = cell(nsteps,1);
 for ii = 1 : length(Q_MPC)
     Q_MPC{ii} = QNdel;
@@ -106,13 +95,7 @@ end
 
 FigureMPCvsClassical;
 
-% We don't observe any difference between the Mpc and the LQG formulation
-% in terms of behavior.
 
-%%
-% Let's now compare the behavior observed when the target has changed
-% during movement (from rectangle to square for instance)
-%
 Q_MPC_RC = cell(nsteps,1);
 Q_MPC_CR = cell(nsteps,1);
 for ii = 1 : length(Q_MPC_RC)
