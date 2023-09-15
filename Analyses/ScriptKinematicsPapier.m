@@ -1,7 +1,3 @@
-% Reward - Experiment 2 script for the paper
-% Antoine de Comite
-% 23th of March 2020 - 8th day of quarantine
-
 %% 0. Loading and preprocessing the data
 clear all; close all; clc;
 PilotesM2 = load('PilotesBis.mat');
@@ -116,7 +112,7 @@ plot([1 2 3 4 5],[mean(mean(ProportionMatrix(:,6,[1 2]),3),1), mean(mean(Proport
 xticks([1 2 3 4 5]); xticklabels({'-10 N','-5 N','0 N','5 N','10 N'}); xlim([0.7 5.3]); xlabel('Mechanical perturbation');
 ylim([-0.03 1.03]); ylabel('Switch proportion [%]'); yticks([0 0.25 0.5 0.75 1]); yticklabels({'0','25','50','75','100'});
 
-% Essayons la régression logistique avec plusieurs classes
+% Essayons la rÃ©gression logistique avec plusieurs classes
 PredictorsMatrix = [TotReward TotForce];
 NearTarget(NearTarget==2)=4;
 [B,dev,stats] = mnrfit(PredictorsMatrix,categorical(NearTarget));
@@ -126,12 +122,6 @@ tableglme = table(NearTarget,categorical(TotReward),TotForce,TotSubjects,'Variab
 mnrglme = fitglme(tableglme,'target~reward+force+(1|subject)','Link','logit','Distribution','Binomial','BinomialSize',length(NearTarget));
 
 
-%%
-
-
-
-% We have significant effect of the force, the reward condition and the
-% subject
 disp(mean(TotKineSpeed(TotReward==1,find(TimeVector==0),2),1,'omitnan'));
 disp(mean(TotKineSpeed(TotReward==0,find(TimeVector==0),2),1,'omitnan'));
 tablespeed = table(TotKineSpeed(:,find(TimeVector==0),2),TotSubjects,TotReward,'VariableNames',{'speed','subjects','reward'});
@@ -146,10 +136,9 @@ plot([1,2],[mean(TotKineSpeed(TotReward==0,TimeVector==0,2),1),mean(TotKineSpeed
 
 
 
-%% Figure 4 : Kinematics Experiment 2 - Individual traces
 NearTarget(NearTarget==4)=2;
 close all; 
-figure('Name','Cinématique - Expérience 2 reward','units','normalized','outerposition',[0 0 1 1]); hold on;
+figure('Name','CinÃ©matique - ExpÃ©rience 2 reward','units','normalized','outerposition',[0 0 1 1]); hold on;
 
 subplot(3,13,[1 2]); hold on; set(gca,'Color','none');
 axis off;
@@ -221,7 +210,6 @@ for kk = 1 : length(idx53)
 end
 xlim([-0.06 0.23]);
 
-% with different rewards
 subplot(3,13,[14 15]); hold on; set(gca,'Color','none');
 axis off;
 idx81 = find(TotSubjects==d & NearTarget==1 & TotVectorTP==7);
@@ -292,7 +280,6 @@ end
 xlim([-0.06 0.23]);
 
 
-%% Figure 4 : Kinematics Experiment 2 - Bottom part of the figure 
 
 figure('units','normalized','outerposition',[0 0 1 1 ]);
 % Same reward 
@@ -360,7 +347,6 @@ xticks([1 2]); xticklabels({'Same','Different'}); xtickangle(90);
 
 
 
-%% Reaction time investigation 
 
 clc;
 TotNormSpeed = sqrt(TotKineSpeed(:,:,1).^2 + TotKineSpeed(:,:,2).^2);
@@ -409,8 +395,7 @@ table_fatigue_block = table(TotMaxSpeed(1:size(TotMaxSpeed,1)/2,:,:),TotBlocks(1
 lme_fatigue_block = fitlme(table_fatigue_block,'pv~block+(1|subjects)');    
 
 
-%%
-% Figure to investigate the time of change of mind 
+
 close all;
 figure('Name','Change of mind in kinematics','units','normalized');
 subplot(2,2,1); hold on; set(gca,'LineWidth',2); set(gca,'Color','none'); set(gca,'FontSize',14);
@@ -465,7 +450,7 @@ xticks([-150 0 400]); xticklabels({'-0.15','0','0.4'});
 yticks([0.09 0.14 0.19]); yticklabels({'0','5','10'});
 ylim([0.08 0.2]);
 
-figure('Name','ROC pour les forces différentes et le même reward','units','normalized');
+figure('Name','ROC pour les forces diffÃ©rentes et le mÃªme reward','units','normalized');
 subplot(2,2,1); hold on; set(gca,'LineWidth',2); set(gca,'FontSize',14); set(gca,'Color','none');
 plot(-200:500, mean(TotKine(NearTarget==1 & TotVectorTP==8, find(TimeVector==-200):find(TimeVector==500),1),1),'r','LineWidth',2);
 plot(-200:500, mean(TotKine(NearTarget==1 & TotVectorTP==8, find(TimeVector==-200):find(TimeVector==500),1),1)+std(TotKine(NearTarget==1 & TotVectorTP==8, find(TimeVector==-200):find(TimeVector==500),1),0,1)/sqrt(nSubjects),'r:','LineWidth',2);
@@ -553,9 +538,6 @@ xline(onsetvalue14,'k:','linewidth',2); xline(0,'k--','linewidth',2);
 xticks([-150 0 400]); xticklabels({'-0.15','0','0.4'});
 yticks([-0.01 0.04 0.09]); yticklabels({'-10','-5','0'});
 ylim([-0.015 0.1]);
-%%
-
-% Let's run the stats associated with the above 
 
 timevector_test = 0:300;
 pval_table = zeros(4,length(timevector_test));
@@ -574,7 +556,7 @@ plot(log10(pval_table(4,:)),'g:','LineWidth',2);
 plot(log10(0.05)*ones(1,length(timevector_test)),'r:');
 plot(log10(0.005)*ones(1,length(timevector_test)),'r');
 
-% Using the ROC analysis 
+ 
 mat81 = TotKine(NearTarget==1 & TotVectorTP==8,find(TimeVector==timevector_test(1)):find(TimeVector==timevector_test(end)),1);
 mat82 = TotKine(NearTarget==2 & TotVectorTP==8,find(TimeVector==timevector_test(1)):find(TimeVector==timevector_test(end)),1);
 mat141 = TotKine(NearTarget==1 & TotVectorTP==14,find(TimeVector==timevector_test(1)):find(TimeVector==timevector_test(end)),1);
@@ -601,7 +583,6 @@ plot(aucvalue4,'b:','LineWidth',2); plot(aucvalue5,'b','LineWidth',2);
 plot(aucvalue11,'b--','LineWidth',2); plot(aucvalue14,'r--','LineWidth',2);
 plot([1 length(aucvalue4)],[0.75 0.75],'k:','LineWidth',2);
 
-% Search onset 0.75
 onsetvalue8 = find(aucvalue8>0.75,1);
 onsetvalue14= find(aucvalue14>0.75,1);
 onsetvalue7 = find(aucvalue7>0.75,1);
@@ -609,8 +590,7 @@ onsetvalue4 = find(aucvalue4>0.75,1);
 onsetvalue5 = find(aucvalue5>0.75,1);
 onsetvalue11 = find(aucvalue11>0.75,1);
 
-% Search the knee... for this purpose we'll get the last two points and
-% compute the regression based on that 
+
 
 diff_aucvalues8 = diff(aucvalue8(onsetvalue8-1:onsetvalue8));
 diff_aucvalues7 = diff(aucvalue7(onsetvalue7-1:onsetvalue7));
@@ -618,8 +598,7 @@ diff_aucvalues4 = diff(aucvalue4(onsetvalue4-1:onsetvalue4));
 diff_aucvalues5 = diff(aucvalue5(onsetvalue5-1:onsetvalue5));
 
 
-%%
-% Let's create a figure with all the onset times 
+
 close all; 
 figure('Name','barplot of the timing','units','normalized'); 
 subplot(1,2,1); hold on; set(gca,'Color','none'); set(gca,'LineWidth',2); set(gca,'FontSize',14);
@@ -630,7 +609,6 @@ subplot(1,2,2); hold on; set(gca,'Color','none'); set(gca,'LineWidth',2); set(gc
 bar([1 2 3],[onsetvalue4 onsetvalue5 onsetvalue11]);
 xticks([1 2 3]); xticklabels({'Different rewards','Baseline','Smaller force'}); xtickangle(45);
 
-% figure proposée par Frédéric
 
 figure('Name','plot for the time','units','normalized'); hold on;
 subplot(1,2,1); hold on; set(gca,'Fontsize',14); set(gca,'Color','none'); set(gca,'LineWidth',2);
