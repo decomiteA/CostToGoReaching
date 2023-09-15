@@ -1,7 +1,3 @@
-% The goal of this script is to test another version of the decision making
-% during movement thing... 
-
-
 clear all; close all; clc;
 tau = 0.04; m = 1; G = 0.1; dt = 0.01; nsteps = 55;
 A1 = [1-G*dt/m 0 0 0 dt/m 0 dt/m 0;
@@ -97,10 +93,7 @@ for jj = 1 : length(force_vector)
 end
 
 FigureFullState;
-% ScriptStatsMnrFit;
-% Add some investigation of the triggered event based on the difference in
-% reward values between the two targets 
-% TriggeredEvents; 
+
 
 %%
 % Modeling with signal dependent noise ... 
@@ -121,88 +114,9 @@ n_iters=50;
 [L_left_sdn_r,S_left_sdn_r,Se_left_sdn_r,s_left_sdn_r,K_left_sdn_r] = solve_iteratively_LQDM(Adel,Bdel,Cdel,Ddel,Hdel,R,QNdel_left,OmegaOmdel,OmegaXidel,nsteps,n_iters,5e-2);
 [L_cent_sdn_r,S_cent_sdn_r,Se_cent_sdn_R,s_cent_sdn_r,K_cent_sdn_r] = solve_iteratively_LQDM(Adel,Bdel,Cdel,Ddel,Hdel,R,QNdel_cent,OmegaOmdel,OmegaXidel,nsteps,n_iters,0);
 [L_righ_sdn_r,S_righ_sdn_r,Se_righ_sdn_r,s_righ_sdn_r,K_righ_sdn_r] = solve_iteratively_LQDM(Adel,Bdel,Cdel,Ddel,Hdel,R,QNdel_righ,OmegaOmdel,OmegaXidel,nsteps,n_iters,5e-2);
-%% 
-% Let's implement michalski experiment
-% Participants are moving toward a target and, as they where moving a new
-% target appears at another location. The targets appear on a circle or
-% radius r=12.5cm and centered around the mid reaching point 
-% 
-% targets_matrix = 0.01 * [12.5, (sqrt(3)+1)/(2*sqrt(2))*12.5, sqrt(3)*12.5/2,(sqrt(3)-1)/(2*sqrt(2))*12.5, sqrt(2)*12.5/2, 12.5/2, 0, -12.5/2, -sqrt(2)*12.5/2, -sqrt(3)*12.5/2, -12.5,-(sqrt(3)-1)/(2*sqrt(2))*12.5,-(sqrt(3)+1)/(2*sqrt(2))*12.5;
-%                   12.5, 12.5+(sqrt(3)-1)/(2*sqrt(2))*12.5, 3*12.5/2,12.5+(sqrt(3)+1)/(2*sqrt(2))*12.5, 12.5+sqrt(2)*12.5/2, 12.5+sqrt(3)*12.5/2, 25, 12.5+sqrt(3)*12.5/2, 12.5+sqrt(2)*12.5/2, 3*12.5/2, 12.5,12.5+(sqrt(3)+1)/(2*sqrt(2))*12.5,12.5+(sqrt(3)-1)/(2*sqrt(2))*12.5];
-%               
-% % FigureTargets;
-% n_targets = size(targets_matrix,2);
-% 
-% % Parameters of the system
-% tau = 0.04; m = 1; G = 0.1; dt = 0.01; nsteps = 55;
-% A1 = [1-G*dt/m 0 0 0 dt/m 0 dt/m 0;
-%       0 1-G*dt 0 0 0 dt/m 0 dt/m;
-%       dt 0 1 0 0 0 0 0;
-%       0 dt 0 1 0 0 0 0;
-%       0 0 0 0 1-dt/tau 0 0 0;
-%       0 0 0 0 0 1-dt/tau 0 0;
-%       0 0 0 0 0 0 1 0;
-%       0 0 0 0 0 0 0 1];
-%   
-% B1 = [0 0; 0 0; 0 0; 0 0; dt/tau 0; 0 dt/tau; 0 0; 0 0];
-%  
-% % We will extend the state once for each target...
-%  
-% Ae = [A1 zeros(size(A1,1),size(A1,2)*2);
-%       zeros(size(A1,1)*2,size(A1,2)),eye(size(A1)*2)];
-%    
-% Be = [B1; zeros(size(B1,1)*2, size(B1,2))];
-% 
-% w1 = 1; w2 = 100;
-% QN_left = zeros(24);
-% QN_cent = zeros(24);
-% QN_left(1,1) = w1; QN_left(1,9) = -w1; QN_left(9,1) = -w1; QN_left(9,9) = w1;
-% QN_left(2,2) = w1; QN_left(2,10) = -w1; QN_left(10,2) = -w1; QN_left(10,10) = w1;
-% QN_left(3,3) = 100*w2; QN_left(3,11) = -100*w2; QN_left(11,3) = -100*w2; QN_left(11,11) = 100*w2;
-% QN_left(4,4) = w2; QN_left(4,12) = -w2; QN_left(12,4) = -w2; QN_left(12,12) = w2;
-% 
-% QN_cent(1,1) = w1; QN_cent(1,17) = -w1; QN_cent(17,1) = -w1; QN_cent(17,17) = w1;
-% QN_cent(2,2) = w1; QN_cent(2,18) = -w1; QN_cent(18,2) = -w1; QN_cent(18,18) = w1;
-% QN_cent(3,3) = 100*w2; QN_cent(3,19) = -100*w2; QN_cent(19,3) = -100*w2; QN_cent(19,19) = 100*w2;
-% QN_cent(4,4) = w2; QN_cent(4,20) = -w2; QN_cent(20,4) = -w2; QN_cent(20,20) = w2;
-% Q = zeros(24,24,nsteps);
-% R = 1e-4 * eye(2);
-% oXmotor = zeros(24);
-% oXmotor(5:6,5:6) = 0.15*eye(2);
-% oXmotor(7:8,7:8) = oXmotor(5:6,5:6);
-% oMeasure = 0.0001*eye(24);
-% H = eye(24); Sig = 0.0001*eye(24);
-% x0 = zeros(24,n_targets);
-% for ii = 1 : n_targets
-%     x0(11:12,ii) = [0 0.25]; x0(19:20,ii) = targets_matrix(:,ii);
-% end
-% x0est = x0;
-% % Adding the delay
-% [Adel,Bdel,Hdel,x0del,Qdel,QNdel_left,OmegaXidel,OmegaOmdel,Sigdel] = addDelay2(Ae,Be,H,x0,5,10,Q,QN_left,oXmotor,oMeasure,Sig);
-% [~,~,~,~,~,QNdel_cent,~,~,~] = addDelay2(Ae,Be,H,x0,5,10,Q,QN_cent,oXmotor,oMeasure,Sig);
-% 
-% % Doing the backward recursion for all the targets
-% [L_left,S_left,s_left] = computeLQC2Gr(Qdel,QNdel_left,R,Adel,Bdel,OmegaXidel,nsteps,0); % initial target
-% [L_cent,S_cent,s_cent] = computeLQC2Gr(Qdel,QNdel_cent,R,Adel,Bdel,OmegaXidel,nsteps,0); % alternative target 
-% 
-% % Creating the cells 
-% L_family = {L_left,L_cent}; S_family = {S_left,S_cent}; s_family = {s_left,0.95*s_cent};
-% 
-% % Modeling the behavior for the different targets 
-% n_simulations = 1;
-% x_pert = zeros(length(x0del),nsteps+1,n_simulations,n_targets);
-% nearestTarget_xpert = zeros(n_simulations,n_targets);
-% for jj = 1 : n_targets
-%    for ii = 1 : n_simulations
-%       [x_pert(:,:,ii,jj),~,c2g1] = apply_OFC_DM_MPSb(x0del(:,jj),x0del(:,jj),Sigdel,OmegaXidel,OmegaOmdel,Adel,Bdel,Hdel,nsteps,L_family,S_family,s_family);
-%    end
-%    nearestTarget_xpert(:,jj) = findNearestTargetb(reshape(x_pert(3,end,:,jj),size(x_pert,3),1));
-% end
-%  
-% FigureTrajTargets;
 
-%% 
-% Let's try to push it to model target redundancy
+
+%% Modeling target redundancy
 
 targets = [-0.05 0.25;
            -0.04 0.25;
@@ -253,7 +167,7 @@ x_s = [-0.05 -0.04 -0.03 -0.02 -0.01 0 0.01 0.02 0.03 0.04 0.05];
 s0 = -10*x_s.^2 - min(-10*x_s.^2);
 s0_left = [-15*x_s(1:6).^2 -5*x_s(7:end).^2] - min([-15*x_s(1:6).^2 -5*x_s(7:end).^2]);
 s0_right = fliplr(s0_left);
-% calculer les trucs pour les différentes conditions 
+% calculer les trucs pour les diffÃ©rentes conditions 
 [L_input,S_input,s_sym] = ComputeInputs(Q_targets_del,R,Adel,Bdel,OmegaXidel,nsteps,2*s0);  
 [~,~,s_leftb] = ComputeInputs(Q_targets_del,R,Adel,Bdel,OmegaXidel,nsteps,2*s0_left);
 [~,~,s_rightb] =ComputeInputs(Q_targets_del,R,Adel,Bdel,OmegaXidel,nsteps,2*s0_right);
@@ -286,9 +200,6 @@ FigureTrajRed;
 
 
 %%
-% Implementing the change in reward distribution during movement. We will
-% only consider the case where the asymetric distribution flips during
-% movement. 
 n_simulations = 10;
 s_leftb_switch = s_leftb;
 s_rightb_switch = s_rightb;
