@@ -1,5 +1,3 @@
-% The goal of this script is to model decision making processes that could
-% happen during movement.
 clear all; clc; close all;
 
 
@@ -58,8 +56,6 @@ x0c3 = [zeros(8,1); 0; 0; 0.05; 0.25; 0; 0; 0; 0]; % Rightward target
 x0input = {x0delc1,x0delc2,x0delc3};
 x0est = x0input;
 
-% Backward recursion for the different targets (here the only difference is
-% the target size)
 
 [Ls,Ss,ss] = computeLQC2G(Qdel,QNdel_small,R,Adel,Bdel,OmegaXidel,nsteps);
 [Lb,Sb,sb] = computeLQC2G(Qdel,QNdel_big,R,Adel,Bdel,OmegaXidel,nsteps);
