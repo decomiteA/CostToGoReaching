@@ -1,7 +1,7 @@
 clear all; close all; clc;
 addpath(fullfile(pwd,'..','utils\'));
 
-%% 0. Definition of the parameters of the simulations 
+%% 0. Definition of the simulations parameters
 
 tau = 0.06; m = 1; G = 1; dt = 0.01; nsteps = 55;
 A1 = [1-G*dt/m 0 0 0 dt/m 0 dt/m 0;
