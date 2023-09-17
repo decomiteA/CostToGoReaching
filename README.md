@@ -12,4 +12,6 @@ The *Simulations* folder contains the code that simulates movements in presence 
 
 The *Analyses* folder contains the code necessary to re-analyse the dataset from our previous study. The data is available for download at this link : https://datadryad.org/stash/dataset/doi:10.5061/dryad.79cnp5hx8
 
-Supporting code for the paper : "Continuous evaluation of the cost-to-go for flexible reaching control and online decisions"
+## Reference
+
+This code is a part of research article titled :"Continuous evaluation of the cost-to-go for flexible reaching control and online decisions"
